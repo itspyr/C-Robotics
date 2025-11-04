@@ -1,0 +1,43 @@
+const bool COMMON_ANODE = false;
+
+const int segA = 4;
+const int segB = 5;
+const int segC = 8;
+const int segD = 7;
+const int segE = 6;
+const int segF = 3;
+const int segG = 2;
+const int dp   = 9;
+
+int segPins[] = {segA, segB, segC, segD, segE, segF, segG};
+
+int delayTime = 500;
+
+inline void segWrite(int pin, bool on) {
+  if (COMMON_ANODE) digitalWrite(pin, on ? LOW : HIGH);
+  else              digitalWrite(pin, on ? HIGH : LOW);
+}
+void allOff() { for (int i=0;i<7;i++) segWrite(segPins[i], false); }
+void allOn()  { for (int i=0;i<7;i++) segWrite(segPins[i], true); segWrite(dp, false); }
+void setOnly(int idx) { allOff(); segWrite(segPins[idx], true); }
+
+void setup() {
+  for (int i=0;i<7;i++) pinMode(segPins[i], OUTPUT);
+  pinMode(dp, OUTPUT);
+  segWrite(dp, false);
+}
+
+void loop() {
+  setOnly(0); delay(delayTime);
+  setOnly(5); delay(delayTime);
+  setOnly(6); delay(delayTime);
+  setOnly(2); delay(delayTime);
+  setOnly(3); delay(delayTime);
+  setOnly(4); delay(delayTime);
+  setOnly(6); delay(delayTime);
+  setOnly(1); delay(delayTime);
+  setOnly(0); delay(delayTime);
+
+  allOn();
+  delay(delayTime);
+}
